@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Gestores\" />
     <Folder Include="Cargas\" />
     <Folder Include="AlgoritmoGenetico\" />
   </ItemGroup>
