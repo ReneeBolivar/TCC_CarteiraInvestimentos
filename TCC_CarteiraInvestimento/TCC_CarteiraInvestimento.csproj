@@ -5,4 +5,11 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Gestores\" />
+    <Folder Include="Cargas\" />
+    <Folder Include="AlgoritmoGenetico\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+
 </Project>
