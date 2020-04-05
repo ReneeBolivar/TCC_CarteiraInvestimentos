@@ -14,7 +14,7 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
             var nobres = Elitismo(GestorEntidades.Populacao.Individuos);
             var plebeus = PodarPlebeus(Dizimacao(GestorEntidades.Populacao.Individuos));
 
-            var qtdeParesNecessarios = (int)Math.Floor((decimal)(GestorConfiguracao.Torneio / 2));
+            var qtdeParesNecessarios = (int)Math.Floor((decimal)((GestorConfiguracao.IndividuosNaPopulacao - GestorConfiguracao.Elitismo) / 2));
             Torneio(plebeus, qtdeParesNecessarios);
 
             GestorEntidades.Populacao.Individuos.Clear();
@@ -80,6 +80,7 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
                 pares.Add(new Tuple<Individuo, Individuo>(par.ElementAt(0), par.ElementAt(1)));
             }
 
+            GestorEntidades.ParesParaCruzamento.Clear();
             GestorEntidades.ParesParaCruzamento.AddRange(pares);
         }
     }

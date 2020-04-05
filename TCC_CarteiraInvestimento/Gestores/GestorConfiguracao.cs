@@ -42,12 +42,12 @@ namespace TCC_CarteiraInvestimento.Gestores
         /// <summary>
         /// Representa a quantidade de individuos escolhidos via elitismo
         /// </summary>
-        public static int Elitismo = (int)Math.Floor(IndividuosNaPopulacao * 0.05f);
+        public static int Elitismo = (int)Math.Floor(IndividuosNaPopulacao * 0.02f);
 
         /// <summary>
         /// Representa a quantidade de individuos escolhidos via torneio
         /// </summary>
-        public static int Torneio = (int)Math.Floor(IndividuosNaPopulacao * 0.90f);
+        public static int Torneio = (int)Math.Floor(IndividuosNaPopulacao * 0.93f);
 
         /// <summary>
         /// Representa a quantidade de individuos dizimados
