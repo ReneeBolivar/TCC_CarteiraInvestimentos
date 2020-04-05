@@ -11,8 +11,12 @@ namespace TCC_CarteiraInvestimento
 
             do
             {
+                AG.AvaliarIndividuos();
 
             } while (true);
+
+            Console.WriteLine("Press any key to end");
+            Console.ReadKey();
         }
     }
 }

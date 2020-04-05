@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using TCC_CarteiraInvestimento.Entidades;
 
 namespace TCC_CarteiraInvestimento.Utils
 {
@@ -28,6 +29,11 @@ namespace TCC_CarteiraInvestimento.Utils
                     return false;
 
             return true;
+        }
+
+        public static int RegraDeTres(int total, int parcial)
+        {
+            return (parcial * 100) / total;
         }
     }
 }
