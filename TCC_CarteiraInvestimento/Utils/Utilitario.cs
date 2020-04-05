@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Threading;
 using TCC_CarteiraInvestimento.Entidades;
@@ -29,6 +30,22 @@ namespace TCC_CarteiraInvestimento.Utils
                     return false;
 
             return true;
+        }
+
+        public static string ObterDescricaoEnum<T>(this T @enum)
+        {
+            var memberInfo = @enum.GetType().GetMember(@enum.ToString());
+            if (memberInfo.Length > 0)
+            {
+                var attrs = memberInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+                if (attrs.Length > 0)
+                {
+                    return ((DescriptionAttribute)attrs[0]).Description;
+                }
+            }
+
+            return @enum.ToString();
         }
 
         public static int RegraDeTres(int total, int parcial)
