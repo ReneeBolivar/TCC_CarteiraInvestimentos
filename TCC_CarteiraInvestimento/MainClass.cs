@@ -1,4 +1,5 @@
 ﻿using System;
+using TCC_CarteiraInvestimento.AlgoritmoGenetico;
 
 namespace TCC_CarteiraInvestimento
 {
@@ -6,7 +7,12 @@ namespace TCC_CarteiraInvestimento
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            AG.GerarPopulacaoInicial();
+
+            do
+            {
+
+            } while (true);
         }
     }
 }
