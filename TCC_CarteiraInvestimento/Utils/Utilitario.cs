@@ -22,7 +22,7 @@ namespace TCC_CarteiraInvestimento.Utils
             return new Random().Next(min, max);
         }
 
-        public static bool Equals(this Individuo individuo, Individuo individuoComparar)
+        public static bool AreEquals(this Individuo individuo, Individuo individuoComparar)
         {
             foreach (var cromossomo in individuo.Cromossomos)
                 if (!individuoComparar.Cromossomos.Contains(cromossomo))
