@@ -18,7 +18,7 @@ namespace TCC_CarteiraInvestimento.Utils
 
         public static int ObterNumeroRandom(int max, int min)
         {
-            Thread.Sleep(100);
+            Thread.Sleep(100); //Aguarda 100ms para evitar gerar valores dentro de um intervalo curto onde seja possivel ter duas ou mais saídas iguais
             return new Random().Next(min, max);
         }
 
@@ -32,8 +32,6 @@ namespace TCC_CarteiraInvestimento.Utils
         }
 
         public static int RegraDeTres(int total, int parcial)
-        {
-            return (parcial * 100) / total;
-        }
+            => (int)Math.Floor( (decimal)((parcial * 100) / total) );
     }
 }

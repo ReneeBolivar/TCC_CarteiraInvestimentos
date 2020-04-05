@@ -9,13 +9,15 @@ namespace TCC_CarteiraInvestimento
         {
             AG.GerarPopulacaoInicial();
 
-            do
+            while (true)
             {
                 AG.AvaliarIndividuos();
                 //SalvarHistorioco(); //salvar após a avalição para manter o peso
+                //if (AG.PopulacaoApta()) break;
                 AG.SelecionarIndividuos();
+                AG.CruzarIndividuos();
 
-            } while (true);
+            }
 
             Console.WriteLine("Press any key to end");
             Console.ReadKey();
