@@ -17,9 +17,9 @@ namespace TCC_CarteiraInvestimento.Utils
             return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(@object), deserializeSettings);
         }
 
-        public static int ObterNumeroRandom(int max, int min)
+        public static int ObterNumeroRandom(int min, int max)
         {
-            Thread.Sleep(100); //Aguarda 100ms para evitar gerar valores dentro de um intervalo curto onde seja possivel ter duas ou mais saídas iguais
+            Thread.Sleep(50); //Aguarda 50ms para evitar gerar valores dentro de um intervalo curto onde seja possivel ter duas ou mais saídas iguais
             return new Random().Next(min, max);
         }
 

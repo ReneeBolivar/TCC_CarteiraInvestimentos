@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TCC_CarteiraInvestimento.AlgoritmoGenetico;
 using TCC_CarteiraInvestimento.Entidades;
@@ -11,6 +12,8 @@ namespace TCC_CarteiraInvestimento
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Iniciado treinamento...");
+
             AG.GerarPopulacaoInicial();
 
             while (true)
@@ -44,11 +47,12 @@ namespace TCC_CarteiraInvestimento
 
             foreach (var individuo in GestorEntidades.Geracoes.Last().Populacao.Individuos)
             {
+                Console.WriteLine($"\n**************************************************************");
                 Console.WriteLine($"[Peso] - {individuo.Peso}");
 
                 foreach (var cromossomo in individuo.Cromossomos)
                 {
-                    Console.WriteLine($"[Ação] - {cromossomo.Empresa.Codigo} \t\t [Setor] - {cromossomo.Empresa.Setor.ObterDescricaoEnum<Setor>()}");
+                    Console.WriteLine($"[Ação] - \t {cromossomo.Empresa.Codigo} \t [Setor] - {cromossomo.Empresa.Setor.ObterDescricaoEnum<Setor>()}");
                 }
             }
         }
