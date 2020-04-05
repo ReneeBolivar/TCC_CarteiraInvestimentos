@@ -13,7 +13,7 @@ namespace TCC_CarteiraInvestimento
             {
                 AG.AvaliarIndividuos();
                 //SalvarHistorioco(); //salvar após a avalição para manter o peso
-                //if (AG.PopulacaoApta()) break;
+                if (AG.PopulacaoApta()) break;
                 AG.SelecionarIndividuos();
                 AG.CruzarIndividuos();
 
