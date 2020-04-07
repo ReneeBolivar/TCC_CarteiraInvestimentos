@@ -42,7 +42,7 @@ namespace TCC_CarteiraInvestimento.Gestores
         /// <summary>
         /// Representa a quantidade de individuos escolhidos via elitismo
         /// </summary>
-        public static int Elitismo = (int)Math.Floor(IndividuosNaPopulacao * 0.02f);
+        public static int Elitismo = (int)Math.Floor(IndividuosNaPopulacao * 0.017f);
 
         /// <summary>
         /// Representa a quantidade de individuos escolhidos via torneio
@@ -52,7 +52,7 @@ namespace TCC_CarteiraInvestimento.Gestores
         /// <summary>
         /// Representa a quantidade de individuos dizimados
         /// </summary>
-        public static int Dizimacao = (int)Math.Floor(IndividuosNaPopulacao * 0.05f);
+        public static int Dizimacao = (int)Math.Floor(IndividuosNaPopulacao * 0.04f);
 
         #endregion
     }
