@@ -19,7 +19,7 @@ namespace TCC_CarteiraInvestimento.Utils
 
         public static int ObterNumeroRandom(int min, int max)
         {
-            Thread.Sleep(50); //Aguarda 50ms para evitar gerar valores dentro de um intervalo curto onde seja possivel ter duas ou mais saídas iguais
+            Thread.Sleep(20); //Aguarda 20ms para evitar gerar valores dentro de um intervalo curto onde seja possivel ter duas ou mais saídas iguais
             return new Random().Next(min, max);
         }
 

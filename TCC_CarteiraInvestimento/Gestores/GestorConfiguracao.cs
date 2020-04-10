@@ -55,5 +55,13 @@ namespace TCC_CarteiraInvestimento.Gestores
         public static int Dizimacao = (int)Math.Floor(IndividuosNaPopulacao * 0.04f);
 
         #endregion
+
+        #region Configuração de mutação
+
+        /// <summary>
+        /// Representa a probabilidade de um cromossomo ser mutado
+        /// </summary>
+        public static float TaxaMutacao = 0.01f;
+        #endregion
     }
 }

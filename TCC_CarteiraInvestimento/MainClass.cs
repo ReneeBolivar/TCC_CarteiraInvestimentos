@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using TCC_CarteiraInvestimento.AlgoritmoGenetico;
 using TCC_CarteiraInvestimento.Entidades;
@@ -18,11 +17,13 @@ namespace TCC_CarteiraInvestimento
 
             while (true)
             {
+                Console.WriteLine($"Geração {GestorEntidades.Geracoes.Last().NumeroGeracao}");
                 AG.AvaliarIndividuos();
                 SalvarHistorico(); //salvar após a avalição para manter o peso
                 if (AG.PopulacaoApta()) break;
                 AG.SelecionarIndividuos();
                 AG.CruzarIndividuos();
+                AG.MutarIndividuos();
             }
 
             Console.WriteLine("Press any key to end");
