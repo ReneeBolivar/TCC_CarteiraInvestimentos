@@ -77,7 +77,7 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
                 if (par.ElementAt(0).AreEquals(par.ElementAt(1)))
                     continue;
 
-                pares.Add(new Tuple<Individuo, Individuo>(par.ElementAt(0), par.ElementAt(1)));
+                pares.Add(new Tuple<Individuo, Individuo>(par.ElementAt(0), par.ElementAt(1))); 
             }
 
             GestorEntidades.ParesParaCruzamento.Clear();

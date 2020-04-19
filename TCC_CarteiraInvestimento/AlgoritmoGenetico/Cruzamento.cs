@@ -14,7 +14,7 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
                 var primeiroFilho = new Cromossomo[GestorConfiguracao.CromossomosPorIndividuos];
                 var segundoFilho = new Cromossomo[GestorConfiguracao.CromossomosPorIndividuos];
 
-                var pontoCorte = Utilitario.ObterNumeroRandom(1, 1);
+                var pontoCorte = Utilitario.ObterNumeroRandom(1, GestorConfiguracao.CromossomosPorIndividuos - 1); 
 
                 // Head
                 for (int i = 0; i < pontoCorte; i++)
