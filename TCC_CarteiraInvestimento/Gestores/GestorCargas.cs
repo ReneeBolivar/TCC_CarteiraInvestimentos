@@ -71,7 +71,7 @@ namespace TCC_CarteiraInvestimento.Gestores
             Cromossomos.AddRange(Carga.QUAL3());
             Cromossomos.AddRange(Carga.SEER3());
             Cromossomos.AddRange(Carga.TIMP3());
-            Cromossomos.AddRange(Carga.IDNT3());
+            //Cromossomos.AddRange(Carga.IDNT3());
             Cromossomos.AddRange(Carga.JHSF3());
             Cromossomos.AddRange(Carga.ODPV3());
             Cromossomos.AddRange(Carga.RAPT4());

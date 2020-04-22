@@ -14,7 +14,7 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
         {
             foreach (var individuo in GestorEntidades.Populacao.Individuos)
             {
-                var pesoAnaliseFundamentalista = 0;
+                var pesoAnaliseFundamentalista = 0f;
                 foreach (var cromossomo in individuo.Cromossomos) // Avaliar cromossomo a cromossomo
                     pesoAnaliseFundamentalista += CalcularAvalicaoIndicadores(cromossomo);
 
@@ -25,7 +25,7 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
             }
         }
 
-        private static int CalcularAvalicaoIndicadores(Cromossomo cromossomo)
+        private static float CalcularAvalicaoIndicadores(Cromossomo cromossomo)
         {
             return AvaliarPL(cromossomo.AnaliseFundamentalista.PL) +
                    AvaliarPVPA(cromossomo.AnaliseFundamentalista.PVPA) +
@@ -43,31 +43,46 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
         }
 
         #region Avaliação de indicadores
-        private static int AvaliarPL(float? pl) => 0;
 
-        private static int AvaliarPVPA(float? pvpa) => 0;
+        private static float AvaliarPL(float? pl)
+            => PesoInversamenteProporcional(GestorEntidades.RangePL.Max, GestorEntidades.RangePL.Min, pl.GetValueOrDefault());
 
-        private static int AvaliarPFCO(float? pfco) => 0;
+        private static float AvaliarPVPA(float? pvpa)
+            => PesoDiretamenteProporcional(GestorEntidades.RangePVPA.Max, GestorEntidades.RangePVPA.Min, pvpa.GetValueOrDefault());
 
-        private static int AvaliarDY(float? dy) => 0;
+        private static float AvaliarPFCO(float? pfco)
+            => PesoDiretamenteProporcional(GestorEntidades.RangePFCO.Max, GestorEntidades.RangePFCO.Min, pfco.GetValueOrDefault());
 
-        private static int AvaliarPSR(float? psr) => 0;
+        private static float AvaliarDY(float? dy)
+            => PesoDiretamenteProporcional(GestorEntidades.RangeDY.Max, GestorEntidades.RangeDY.Min, dy.GetValueOrDefault());
 
-        private static int AvaliarEVEBIT(float? evebit) => 0;
+        private static float AvaliarPSR(float? psr)
+            => PesoDiretamenteProporcional(GestorEntidades.RangePSR.Max, GestorEntidades.RangePSR.Min, psr.GetValueOrDefault());
 
-        private static int AvaliarROE(float? roe) => 0;
+        private static float AvaliarEVEBIT(float? evebit)
+            => PesoDiretamenteProporcional(GestorEntidades.RangeEVEBIT.Max, GestorEntidades.RangeEVEBIT.Min, evebit.GetValueOrDefault());
 
-        private static int AvaliarROIC(float? roic) => 0;
+        private static float AvaliarROE(float? roe)
+            => PesoDiretamenteProporcional(GestorEntidades.RangeROE.Max, GestorEntidades.RangeROE.Min, roe.GetValueOrDefault());
 
-        private static int AvaliarLC(float? lc) => 0;
+        private static float AvaliarROIC(float? roic)
+            => PesoDiretamenteProporcional(GestorEntidades.RangeROIC.Max, GestorEntidades.RangeROIC.Min, roic.GetValueOrDefault());
 
-        private static int AvaliarDBPL(float? dbpl) => 0;
+        private static float AvaliarLC(float? lc)
+            => PesoDiretamenteProporcional(GestorEntidades.RangeLC.Max, GestorEntidades.RangeLC.Min, lc.GetValueOrDefault());
 
-        private static int AvaliarLPA(float? lpa) => 0;
+        private static float AvaliarDBPL(float? dbpl)
+            => PesoInversamenteProporcional(GestorEntidades.RangePL.Max, GestorEntidades.RangePL.Min, dbpl.GetValueOrDefault());
 
-        private static int AvaliarVPA(float? vpa) => 0;
+        private static float AvaliarLPA(float? lpa)
+            => PesoDiretamenteProporcional(GestorEntidades.RangeLPA.Max, GestorEntidades.RangeLPA.Min, lpa.GetValueOrDefault());
 
-        private static int AvaliarDPA(float? dpa) => 0;
+        private static float AvaliarVPA(float? vpa)
+            => PesoDiretamenteProporcional(GestorEntidades.RangeVPA.Max, GestorEntidades.RangeVPA.Min, vpa.GetValueOrDefault());
+
+        private static float AvaliarDPA(float? dpa)
+            => PesoDiretamenteProporcional(GestorEntidades.RangeDPA.Max, GestorEntidades.RangeDPA.Min, dpa.GetValueOrDefault());
+
         #endregion
 
         #region Avaliação de elementos únicos
@@ -131,5 +146,21 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
             throw new ArgumentOutOfRangeException($"Valor não esperado no método {nameof(AvaliarSetores)}");
         }
         #endregion
+
+        private static float NormalizarEscala(float maximoDaAntigaEscala, float minimoDaAntigaEscala, float valor)
+        {
+            var razaoMaxMinEscalas = (MaximoNaNovaEscala - MinimoNaNovaEscala) / (maximoDaAntigaEscala - minimoDaAntigaEscala);
+
+            return (razaoMaxMinEscalas * (valor - minimoDaAntigaEscala)) + MinimoNaNovaEscala;
+        }
+
+        private static float MaximoNaNovaEscala = 10.0f;
+        private static float MinimoNaNovaEscala = 0.0f;
+
+        private static float PesoInversamenteProporcional(float max, float min, float valor)
+            => MaximoNaNovaEscala - NormalizarEscala(max, min, valor);
+
+        private static float PesoDiretamenteProporcional(float max, float min, float valor)
+            => NormalizarEscala(max, min, valor);
     }
 }

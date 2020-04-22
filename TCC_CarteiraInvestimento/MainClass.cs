@@ -17,7 +17,6 @@ namespace TCC_CarteiraInvestimento
 
             while (true)
             {
-                Console.WriteLine($"Geração {GestorEntidades.Geracoes.Last().NumeroGeracao}");
                 AG.AvaliarIndividuos();
                 SalvarHistorico(); //salvar após a avalição para manter o peso
                 if (AG.PopulacaoApta()) break;
@@ -25,6 +24,8 @@ namespace TCC_CarteiraInvestimento
                 AG.CruzarIndividuos();
                 AG.MutarIndividuos();
             }
+
+            Console.WriteLine($"Tempo de execução { GestorEntidades.Geracoes.Last().DataGeracao.Subtract(GestorEntidades.Geracoes.First().DataGeracao)}");
 
             Console.WriteLine("Press any key to end");
             Console.ReadKey();
@@ -46,16 +47,15 @@ namespace TCC_CarteiraInvestimento
         {
             Console.Clear();
 
-            foreach (var individuo in GestorEntidades.Geracoes.Last().Populacao.Individuos)
-            {
-                Console.WriteLine($"\n**************************************************************");
-                Console.WriteLine($"[Peso] - {individuo.Peso}");
+            Console.WriteLine($"Geração {(GestorEntidades.Geracoes.Count > 0 ? GestorEntidades.Geracoes.Last().NumeroGeracao : 0)} ****************************************");
 
-                foreach (var cromossomo in individuo.Cromossomos)
-                {
-                    Console.WriteLine($"[Ação] - \t {cromossomo.Empresa.Codigo} \t [Setor] - {cromossomo.Empresa.Setor.ObterDescricaoEnum<Setor>()}");
-                }
-            }
+            var individuo = GestorEntidades.Geracoes.Last().Populacao.Individuos.OrderByDescending(x => x.Peso).First();
+            
+            Console.WriteLine($"\n**************************************************************");
+            Console.WriteLine($"[Peso] - {individuo.Peso}");
+
+            foreach (var cromossomo in individuo.Cromossomos)
+                Console.WriteLine($"[Ação] - \t {cromossomo.Empresa.Codigo} \t [Setor] - {cromossomo.Empresa.Setor.ObterDescricaoEnum<Setor>()}");
         }
     }
 }

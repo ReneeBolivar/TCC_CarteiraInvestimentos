@@ -28,12 +28,12 @@ namespace TCC_CarteiraInvestimento.Gestores
         /// <summary>
         /// Representa qual o ano a ser utilizado para o treinamento
         /// </summary>
-        public static int AnoTreinamento = 2018;
+        public static int AnoTreinamento = 2017;
 
         /// <summary>
         /// Representa qual o trimestre a ser utilicado para o treinamento
         /// </summary>
-        public static int TrimestreTreinamento = 1;
+        public static int TrimestreTreinamento = 4;
 
         #endregion
 
@@ -65,3 +65,4 @@ namespace TCC_CarteiraInvestimento.Gestores
         #endregion
     }
 }
+ 
