@@ -27,8 +27,16 @@ namespace TCC_CarteiraInvestimento
 
             Console.WriteLine($"Tempo de execução { GestorEntidades.Geracoes.Last().DataGeracao.Subtract(GestorEntidades.Geracoes.First().DataGeracao)}");
 
+            NotificacaoSonora();
+
             Console.WriteLine("Press any key to end");
             Console.ReadKey();
+        }
+
+        private static void NotificacaoSonora()
+        {
+            for (int i = 0; i < 3; i++) 
+                Console.Beep();
         }
 
         private static void SalvarHistorico()

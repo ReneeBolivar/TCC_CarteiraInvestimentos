@@ -27,19 +27,19 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
 
         private static float CalcularAvalicaoIndicadores(Cromossomo cromossomo)
         {
-            return (AvaliarPL(cromossomo.AnaliseFundamentalista.PL) * 2) +
-                   AvaliarPVPA(cromossomo.AnaliseFundamentalista.PVPA) +
-                   AvaliarPFCO(cromossomo.AnaliseFundamentalista.PFCO) +
-                   (AvaliarDY(cromossomo.AnaliseFundamentalista.DY) * 2) +
-                   (AvaliarPSR(cromossomo.AnaliseFundamentalista.PSR) * 2) +
-                   AvaliarEVEBIT(cromossomo.AnaliseFundamentalista.EVEBIT) +
-                   AvaliarROE(cromossomo.AnaliseFundamentalista.ROE) +
-                   AvaliarROIC(cromossomo.AnaliseFundamentalista.ROIC) +
-                   (AvaliarLC(cromossomo.AnaliseFundamentalista.LC) * 2) +
-                   AvaliarDBPL(cromossomo.AnaliseFundamentalista.DBPL) +
-                   AvaliarLPA(cromossomo.AnaliseFundamentalista.LPA) +
-                   AvaliarVPA(cromossomo.AnaliseFundamentalista.VPA) +
-                   AvaliarDPA(cromossomo.AnaliseFundamentalista.DPA);
+            return AvaliarPL(cromossomo.AnaliseFundamentalista.PL) +
+                   //AvaliarPVPA(cromossomo.AnaliseFundamentalista.PVPA) +
+                   //AvaliarPFCO(cromossomo.AnaliseFundamentalista.PFCO) +
+                   AvaliarDY(cromossomo.AnaliseFundamentalista.DY) +
+                   AvaliarPSR(cromossomo.AnaliseFundamentalista.PSR) +
+                   //AvaliarEVEBIT(cromossomo.AnaliseFundamentalista.EVEBIT) +
+                   //AvaliarROE(cromossomo.AnaliseFundamentalista.ROE) +
+                   //AvaliarROIC(cromossomo.AnaliseFundamentalista.ROIC) +
+                   AvaliarLC(cromossomo.AnaliseFundamentalista.LC);
+                   //AvaliarDBPL(cromossomo.AnaliseFundamentalista.DBPL) +
+                   //AvaliarLPA(cromossomo.AnaliseFundamentalista.LPA) +
+                   //AvaliarVPA(cromossomo.AnaliseFundamentalista.VPA) +
+                   //AvaliarDPA(cromossomo.AnaliseFundamentalista.DPA);
         }
 
         #region Avaliação de indicadores
