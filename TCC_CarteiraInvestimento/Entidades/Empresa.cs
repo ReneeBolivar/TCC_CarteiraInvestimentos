@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace TCC_CarteiraInvestimento.Entidades
 {
@@ -7,6 +9,9 @@ namespace TCC_CarteiraInvestimento.Entidades
         public string Nome { get; set; }
         public Setor Setor { get; set; }
         public string Codigo { get; set; }
+
+        //Preços do ativo desta empresa por perído (não é utilizdo no treinamento, apenas na coleta de resultados)
+        public List<Tuple<Periodo, float>> PrecoAtivoNoPeriodo { get; set; }
     }
 
     public enum Setor

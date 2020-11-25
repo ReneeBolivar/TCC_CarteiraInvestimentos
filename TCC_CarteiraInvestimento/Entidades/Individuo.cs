@@ -15,6 +15,6 @@ namespace TCC_CarteiraInvestimento.Entidades
         }
 
         public List<Cromossomo> Cromossomos { get; set; }
-        public int Peso { get; set; }
+        public float Peso { get; set; }
     }
 }

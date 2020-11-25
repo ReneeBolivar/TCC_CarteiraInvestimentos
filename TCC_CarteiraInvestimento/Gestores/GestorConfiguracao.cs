@@ -1,4 +1,5 @@
 ﻿using System;
+using static TCC_CarteiraInvestimento.Utils.Enums;
 
 namespace TCC_CarteiraInvestimento.Gestores
 {
@@ -34,6 +35,11 @@ namespace TCC_CarteiraInvestimento.Gestores
         /// Representa qual o trimestre a ser utilicado para o treinamento
         /// </summary>
         public static int TrimestreTreinamento = 1;
+
+        /// <summary>
+        /// Representa qual configuração está usando para o treinamento
+        /// </summary>
+        public static ConfiguracaoFitness ConfiguracaoFitness = ConfiguracaoFitness.Primeira;
 
         #endregion
 

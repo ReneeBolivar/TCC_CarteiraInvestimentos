@@ -41,7 +41,7 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
         {
             var ultimasOitoGeracoes = GestorEntidades.Geracoes.OrderByDescending(x => x.DataGeracao).Take(8);
 
-            var pesos = new List<int>();
+            var pesos = new List<float>();
 
             foreach (var geracao in ultimasOitoGeracoes)
                 pesos.Add(geracao.Populacao.Individuos.Max(x => x.Peso));
