@@ -11,7 +11,7 @@ namespace TCC_CarteiraInvestimento.Entidades
         public string Codigo { get; set; }
 
         //Preços do ativo desta empresa por perído (não é utilizdo no treinamento, apenas na coleta de resultados)
-        public List<Tuple<Periodo, float>> PrecoAtivoNoPeriodo { get; set; }
+        public List<Tuple<Periodo, decimal>> PrecoAtivoNoPeriodo { get; set; }
     }
 
     public enum Setor
