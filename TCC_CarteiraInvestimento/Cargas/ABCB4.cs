@@ -15,7 +15,7 @@ namespace TCC_CarteiraInvestimento.Cargas
                 Codigo = "ABCB4",
                 Nome = "BANCO ABC BRASIL S/A.",
                 Setor = Setor.Financeiros,
-                PrecoAtivoNoPeriodo = ObterAtivos()
+                PrecoAtivoNoPeriodo = ObterAtivos_ABCB4()
             };
 
             #region Compreende todo o ano de 2018
@@ -249,7 +249,7 @@ namespace TCC_CarteiraInvestimento.Cargas
             return localList;
         }
 
-        private static List<Tuple<Periodo, decimal>> ObterAtivos()
+        private static List<Tuple<Periodo, decimal>> ObterAtivos_ABCB4()
         {
             var ativos = new List<Tuple<Periodo, decimal>>();
 
