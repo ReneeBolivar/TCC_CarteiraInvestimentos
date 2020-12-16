@@ -16,7 +16,8 @@ namespace TCC_CarteiraInvestimento.Cargas
             {
                 Codigo = "ELET3",
                 Nome = "CENTRAIS ELETRICAS BRASILEIRAS SA.",
-                Setor = Setor.EnergiaEletrica
+                Setor = Setor.EnergiaEletrica,
+                PrecoAtivoNoPeriodo = ObterAtivos_ELET3()
             };
 
             #region Compreende todo o ano de 2018
@@ -248,6 +249,46 @@ namespace TCC_CarteiraInvestimento.Cargas
             #endregion
 
             return localList;
+        }
+
+        private static List<Tuple<Periodo, decimal>> ObterAtivos_ELET3()
+        {
+            var ativos = new List<Tuple<Periodo, decimal>>();
+
+            #region 2019
+
+            ativos.Add(new Tuple<Periodo, decimal>(new Periodo { Ano = 2019, Trimestre = 1 }, 34.31m));
+
+            #endregion
+
+            #region 2018
+
+            ativos.Add(new Tuple<Periodo, decimal>(new Periodo { Ano = 2018, Trimestre = 1 }, 19.64m));
+            ativos.Add(new Tuple<Periodo, decimal>(new Periodo { Ano = 2018, Trimestre = 2 }, 11.4m));
+            ativos.Add(new Tuple<Periodo, decimal>(new Periodo { Ano = 2018, Trimestre = 3 }, 14.5m));
+            ativos.Add(new Tuple<Periodo, decimal>(new Periodo { Ano = 2018, Trimestre = 4 }, 22.66m));
+
+            #endregion
+
+            #region 2017
+
+            ativos.Add(new Tuple<Periodo, decimal>(new Periodo { Ano = 2017, Trimestre = 1 }, 15.99m));
+            ativos.Add(new Tuple<Periodo, decimal>(new Periodo { Ano = 2017, Trimestre = 2 }, 11.65m));
+            ativos.Add(new Tuple<Periodo, decimal>(new Periodo { Ano = 2017, Trimestre = 3 }, 18.48m));
+            ativos.Add(new Tuple<Periodo, decimal>(new Periodo { Ano = 2017, Trimestre = 4 }, 18.08m));
+
+            #endregion
+
+            #region 2016
+
+            ativos.Add(new Tuple<Periodo, decimal>(new Periodo { Ano = 2016, Trimestre = 1 }, 6.2m));
+            ativos.Add(new Tuple<Periodo, decimal>(new Periodo { Ano = 2016, Trimestre = 2 }, 12.01m));
+            ativos.Add(new Tuple<Periodo, decimal>(new Periodo { Ano = 2016, Trimestre = 3 }, 18.01m));
+            ativos.Add(new Tuple<Periodo, decimal>(new Periodo { Ano = 2016, Trimestre = 4 }, 21.33m));
+
+            #endregion
+
+            return null;
         }
     }
 }
