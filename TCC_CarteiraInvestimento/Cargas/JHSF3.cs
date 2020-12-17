@@ -173,5 +173,7 @@ namespace TCC_CarteiraInvestimento.Cargas
 
             return localList;
         }
+
+
     }
 }
