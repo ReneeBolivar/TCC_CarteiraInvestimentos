@@ -32,7 +32,7 @@ namespace TCC_CarteiraInvestimento.Gestores
             Cromossomos.AddRange(Carga.EKTR4());
             Cromossomos.AddRange(Carga.ENBR3());
             Cromossomos.AddRange(Carga.EQTL3());
-            Cromossomos.AddRange(Carga.TESA4());
+            Cromossomos.AddRange(Carga.FESA4());
             Cromossomos.AddRange(Carga.LCAM3());
             Cromossomos.AddRange(Carga.MRFG3());
             Cromossomos.AddRange(Carga.MYPK3());
