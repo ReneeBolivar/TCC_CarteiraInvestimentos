@@ -287,7 +287,7 @@ namespace TCC_CarteiraInvestimento.Cargas
 
             #endregion
 
-            return null;
+            return ativos;
         }
     }
 }
