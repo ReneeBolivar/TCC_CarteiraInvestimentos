@@ -1,13 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using ClosedXML.Excel;
 
 namespace TCC_CarteiraInvestimento.Utils
 {
     public static class Excel
     {
-        public readonly static XLWorkbook _workbook = new XLWorkbook();
+        private static XLWorkbook _workbook;
+        private static IXLWorksheet _worksheet;
+        private static string _arquivo;
 
-        public static void Exportar(string nomeEtiqueta, List<(string codEmpresa, decimal valor, decimal score)> dados)
+        #region ZScore
+
+        public static void InicializarArquivo()
+            => _workbook = new XLWorkbook();
+
+        public static void ExportarZScore(string nomeEtiqueta, List<(string codEmpresa, decimal valor, decimal score)> dados)
         {
             var worksheet = _workbook.Worksheets.Add(nomeEtiqueta);
 
@@ -37,5 +45,38 @@ namespace TCC_CarteiraInvestimento.Utils
 
             return worksheet;
         }
+
+        #endregion
+
+        public static void InicializarArquivo([NotNull] string nomeArquivo)
+        {
+            _workbook = new XLWorkbook();
+            _arquivo = nomeArquivo;
+        }
+
+        public static void IdentificarEtiqueta([NotNull]string nomeEtiqueta)
+            => _worksheet = _workbook.Worksheets.Add(nomeEtiqueta);
+
+        public static void GravarCelula([NotNull](string celula, object valor) dado)
+            => _worksheet.Cell(dado.celula).Value = dado.valor;
+
+        public static void SalvarAlteracoes()
+            => _workbook.SaveAs(_arquivo);
+
+        public static void LiberarRecursos()
+        {
+            _workbook.Dispose();
+            _worksheet.Clear();
+        }
     }
 }
+
+/*
+    InicializarArquivo
+    IdentificarEtiqueta
+        Loop begin
+        GravarCelula
+        SalvarAlteracoes
+        end Loop
+    LiberarRecursos
+ */

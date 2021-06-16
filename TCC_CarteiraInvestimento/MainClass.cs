@@ -48,10 +48,11 @@ namespace TCC_CarteiraInvestimento
                 for (int t = 1; t <= 4; t++) //Trimestres
                 {
                     var c2017_1 = ObterValores(a, t);
-                    Excel.Exportar($"Ano_{a}_Trimestre_{t}", c2017_1);
+                    Excel.InicializarArquivo();
+                    Excel.ExportarZScore($"Ano_{a}_Trimestre_{t}", c2017_1);
                 }
 
-            Excel._workbook.Dispose();
+            Excel.LiberarRecursos();
         }
 
         private static List<(string codEmpresa, decimal valor, decimal score)> CalcularBalanceamento(int ano, int trismestre)
