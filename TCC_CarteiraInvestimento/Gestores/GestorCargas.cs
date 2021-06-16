@@ -38,7 +38,7 @@ namespace TCC_CarteiraInvestimento.Gestores
             Cromossomos.AddRange(Carga.MYPK3());
             Cromossomos.AddRange(Carga.SAPR4());
             Cromossomos.AddRange(Carga.TAEE11());
-            Cromossomos.AddRange(Carga.TIET11());
+            //Cromossomos.AddRange(Carga.TIET11());
             Cromossomos.AddRange(Carga.TRPN3());
             Cromossomos.AddRange(Carga.CIEL3());
             Cromossomos.AddRange(Carga.FIBR3());

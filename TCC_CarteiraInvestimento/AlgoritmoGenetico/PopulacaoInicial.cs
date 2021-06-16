@@ -27,7 +27,6 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
                     Cromossomos = ObterCromossomos()
                 });
             }
-            ;
         }
 
         private static int GerarIndividuosSequenciais()

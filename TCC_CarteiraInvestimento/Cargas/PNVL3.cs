@@ -16,7 +16,8 @@ namespace TCC_CarteiraInvestimento.Cargas
             {
                 Codigo = "PNVL3",
                 Nome = "DIMED SA DISTRIBUIDORA DE MEDICAMENTOS",
-                Setor = Setor.ComercioDistribuicao
+                Setor = Setor.ComercioDistribuicao,
+                PrecoAtivoNoPeriodo = ObterAtivos_PNVL3()
             };
 
             #region 2018
