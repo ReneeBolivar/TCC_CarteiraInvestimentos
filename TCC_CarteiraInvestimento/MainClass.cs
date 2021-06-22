@@ -104,7 +104,7 @@ namespace TCC_CarteiraInvestimento
         private static void ExportarGeracao(Geracao gen)
         {
             Excel.IdentificarEtiqueta($"GEN-{gen.NumeroGeracao}");
-
+            
             #region Melhor indivíduo
 
             var melhoresCromossomos = ObterMelhoresIndividuos();
@@ -128,7 +128,7 @@ namespace TCC_CarteiraInvestimento
             Excel.GravarCelula("G2", $"{pioresCromossomos.ElementAt(4).Item1}(Peso{pioresCromossomos.ElementAt(0).Item2})");
 
             #endregion
-
+            
             #region Cabeçalho
 
             Excel.GravarCelula("A3", "Peso");
@@ -147,14 +147,14 @@ namespace TCC_CarteiraInvestimento
             {
                 Excel.GravarCelula($"A{linha}", ind.Peso);
 
-                Excel.GravarCelula($"C{linha}", ind.Cromossomos[0]);
-                Excel.GravarCelula($"D{linha}", ind.Cromossomos[1]);
-                Excel.GravarCelula($"E{linha}", ind.Cromossomos[2]);
-                Excel.GravarCelula($"F{linha}", ind.Cromossomos[3]);
-                Excel.GravarCelula($"G{linha}", ind.Cromossomos[4]);
+                Excel.GravarCelula($"C{linha}", ind.Cromossomos[0].Empresa.Codigo, ind.Cromossomos[0].Empresa.Setor.ObterDescricaoEnum<Setor>());
+                Excel.GravarCelula($"D{linha}", ind.Cromossomos[1].Empresa.Codigo, ind.Cromossomos[1].Empresa.Setor.ObterDescricaoEnum<Setor>());
+                Excel.GravarCelula($"E{linha}", ind.Cromossomos[2].Empresa.Codigo, ind.Cromossomos[2].Empresa.Setor.ObterDescricaoEnum<Setor>());
+                Excel.GravarCelula($"F{linha}", ind.Cromossomos[3].Empresa.Codigo, ind.Cromossomos[3].Empresa.Setor.ObterDescricaoEnum<Setor>());
+                Excel.GravarCelula($"G{linha}", ind.Cromossomos[4].Empresa.Codigo, ind.Cromossomos[4].Empresa.Setor.ObterDescricaoEnum<Setor>());
 
                 Excel.SalvarAlteracoes();
-                linha++;
+                linha ++;
             } 
 
             #endregion

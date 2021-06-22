@@ -54,11 +54,16 @@ namespace TCC_CarteiraInvestimento.Utils
             _arquivo = nomeArquivo;
         }
 
-        public static void IdentificarEtiqueta([NotNull]string nomeEtiqueta)
+        public static void IdentificarEtiqueta([NotNull] string nomeEtiqueta)
             => _worksheet = _workbook.Worksheets.Add(nomeEtiqueta);
 
-        public static void GravarCelula([NotNull]string celula, [NotNull]object valor)
-            => _worksheet.Cell(celula).Value = valor;
+        public static void GravarCelula([NotNull] string celula, [NotNull] object valor, string comentario = null)
+        {
+            if (!string.IsNullOrEmpty(comentario))
+                _worksheet.Cell(celula).Comment.SetVisible().AddText(comentario);
+
+            _worksheet.Cell(celula).Value = valor;
+        }
 
         public static void SalvarAlteracoes()
             => _workbook.SaveAs(_arquivo);
