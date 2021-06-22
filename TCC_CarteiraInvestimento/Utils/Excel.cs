@@ -57,8 +57,8 @@ namespace TCC_CarteiraInvestimento.Utils
         public static void IdentificarEtiqueta([NotNull]string nomeEtiqueta)
             => _worksheet = _workbook.Worksheets.Add(nomeEtiqueta);
 
-        public static void GravarCelula([NotNull](string celula, object valor) dado)
-            => _worksheet.Cell(dado.celula).Value = dado.valor;
+        public static void GravarCelula([NotNull]string celula, [NotNull]object valor)
+            => _worksheet.Cell(celula).Value = valor;
 
         public static void SalvarAlteracoes()
             => _workbook.SaveAs(_arquivo);
@@ -66,7 +66,6 @@ namespace TCC_CarteiraInvestimento.Utils
         public static void LiberarRecursos()
         {
             _workbook.Dispose();
-            _worksheet.Clear();
         }
     }
 }

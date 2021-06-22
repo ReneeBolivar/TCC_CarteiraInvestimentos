@@ -5,6 +5,7 @@ using TCC_CarteiraInvestimento.AlgoritmoGenetico;
 using TCC_CarteiraInvestimento.Entidades;
 using TCC_CarteiraInvestimento.Gestores;
 using TCC_CarteiraInvestimento.Utils;
+using static TCC_CarteiraInvestimento.Utils.Enums;
 
 namespace TCC_CarteiraInvestimento
 {
@@ -12,76 +13,161 @@ namespace TCC_CarteiraInvestimento
     {
         static void Main(string[] args)
         {
-            GerarTabelaBalanceamento();
-
-            Console.WriteLine("Iniciado treinamento...");
-
-            AG.GerarPopulacaoInicial();
-
             while (true)
             {
-                Console.WriteLine($"Geração {GestorEntidades.Geracoes.Last().NumeroGeracao}");
-                AG.AvaliarIndividuos();
-                SalvarHistorico(); //salvar após a avalição para manter o peso
-                if (AG.PopulacaoApta()) break;
-                AG.SelecionarIndividuos();
-                AG.CruzarIndividuos();
-                AG.MutarIndividuos();
-            }
+                var opcao = Menu();
 
-            Console.WriteLine("Press any key to end");
-            Console.ReadKey();
-        }
-
-        private static void GerarTabelaBalanceamento()
-        {
-            List<(string codEmpresa, decimal valor, decimal score)> ObterValores(int ano, int tri) {
-                GestorConfiguracao.AnoTreinamento = ano;
-                GestorConfiguracao.TrimestreTreinamento = tri;
-                Print($"Gerando população do ano {ano} trimestre {tri}..");
-                AG.GerarPopulacaoInicial();
-
-                return CalcularBalanceamento(ano, tri);
-            }
-
-            for (int a = 2017; a <= 2018; a++) //Anos
-                for (int t = 1; t <= 4; t++) //Trimestres
+                switch (opcao)
                 {
-                    var c2017_1 = ObterValores(a, t);
-                    Excel.InicializarArquivo();
-                    Excel.ExportarZScore($"Ano_{a}_Trimestre_{t}", c2017_1);
-                }
+                    case OpcoesMenu.CalcularZScore:
+                        ZScore.GerarTabelaBalanceamento();
+                        break;
+                    case OpcoesMenu.Treinar:
+                        Print("Iniciado treinamento...");
 
-            Excel.LiberarRecursos();
+                        Excel.InicializarArquivo($"C:\\Users\\Renee\\Desktop\\Treinamento.xlsx");
+
+                        AG.GerarPopulacaoInicial();
+                        Print("População inicial gerada...");
+
+                        var execCount = 0;
+                        while (true)
+                        {
+                            Print($"Execução nº{execCount}...\n");
+
+                            AG.AvaliarIndividuos();
+                            Print("Fitness aplicado... \n");
+
+                            SalvarHistorico(); //salvar após a avalição para manter o peso
+
+                            if (AG.PopulacaoApta()) break;
+                            Print("População inadequada...");
+
+                            AG.SelecionarIndividuos();
+                            Print("Pares de pais selecionados...");
+
+                            AG.CruzarIndividuos();
+                            Print("Gerado novos indivíduos...");
+
+                            AG.MutarIndividuos();
+
+                            execCount++;
+                        }
+
+                        Excel.LiberarRecursos();
+
+                        break;
+                    case OpcoesMenu.MelhorCarteira:
+
+                        break;
+                    case OpcoesMenu.PiorCarteira:
+                        break;
+                    case OpcoesMenu.Sair:
+                        Console.ReadKey();
+                        return;
+                    default:
+                        break;
+                }
+            }
         }
 
-        private static List<(string codEmpresa, decimal valor, decimal score)> CalcularBalanceamento(int ano, int trismestre)
+        private static OpcoesMenu Menu()
         {
-            var dados = GestorEntidades.CromossomosDisponiveis
-                                       .Where(x => x.Periodo.Ano == ano && x.Periodo.Trimestre == trismestre)
-                                       .Select(x => 
-                                        new ValueTuple<string, decimal>
-                                           (x.Empresa.Codigo,
-                                            x.Empresa.PrecoAtivoNoPeriodo
-                                                                 .Where(y => y.Item1.Ano == ano && y.Item1.Trimestre == trismestre)
-                                                                 .Select(z => z.Item2)
-                                                                 .SingleOrDefault())
-                                       )
-                                       .ToList();
+            Print("\n\n");
+            Print("----------------------");
+            Print($"[{(int)OpcoesMenu.CalcularZScore}] - ZScore");
+            Print($"[{(int)OpcoesMenu.Treinar}] - Treinamento");
+            Print($"[{(int)OpcoesMenu.MelhorCarteira}] - Mostrar melhor indivíduo");
+            Print($"[{(int)OpcoesMenu.PiorCarteira}] - Mostrar pior indivíduo");
+            Print($"[{(int)OpcoesMenu.Sair}] - Sair");
+            Print("----------------------");
 
-            return ZScore.Calcular(dados);
+            return (OpcoesMenu)int.Parse(Console.ReadLine());
         }
 
         private static void SalvarHistorico()
         {
-            GestorEntidades.Geracoes.Add(new Geracao() 
-            { 
+            var gen = new Geracao()
+            {
                 DataGeracao = DateTime.Now,
                 NumeroGeracao = GestorEntidades.Geracoes.Count + 1,
                 Populacao = GestorEntidades.Populacao.Clonar<Populacao>()
-            });
+            };
+
+            GestorEntidades.Geracoes.Add(gen);
+
+            ExportarGeracao(gen);
 
             MostrarUltimaGeracao();
+        }
+
+        private static void ExportarGeracao(Geracao gen)
+        {
+            Excel.IdentificarEtiqueta($"GEN-{gen.NumeroGeracao}");
+
+            #region Melhor indivíduo
+
+            var melhoresCromossomos = ObterMelhoresIndividuos();
+            Excel.GravarCelula("A1", "Melhor indivíduo");
+            Excel.GravarCelula("C1", $"{melhoresCromossomos.ElementAt(0).Item1}(Peso{melhoresCromossomos.ElementAt(0).Item2})");
+            Excel.GravarCelula("D1", $"{melhoresCromossomos.ElementAt(1).Item1}(Peso{melhoresCromossomos.ElementAt(0).Item2})");
+            Excel.GravarCelula("E1", $"{melhoresCromossomos.ElementAt(2).Item1}(Peso{melhoresCromossomos.ElementAt(0).Item2})");
+            Excel.GravarCelula("F1", $"{melhoresCromossomos.ElementAt(3).Item1}(Peso{melhoresCromossomos.ElementAt(0).Item2})");
+            Excel.GravarCelula("G1", $"{melhoresCromossomos.ElementAt(4).Item1}(Peso{melhoresCromossomos.ElementAt(0).Item2})");
+
+            #endregion
+
+            #region Pior indivíduo
+
+            var pioresCromossomos = ObterPioresIndividuos();
+            Excel.GravarCelula("A2", "Pior indivíduo");
+            Excel.GravarCelula("C2", $"{pioresCromossomos.ElementAt(0).Item1}(Peso{pioresCromossomos.ElementAt(0).Item2})");
+            Excel.GravarCelula("D2", $"{pioresCromossomos.ElementAt(1).Item1}(Peso{pioresCromossomos.ElementAt(0).Item2})");
+            Excel.GravarCelula("E2", $"{pioresCromossomos.ElementAt(2).Item1}(Peso{pioresCromossomos.ElementAt(0).Item2})");
+            Excel.GravarCelula("F2", $"{pioresCromossomos.ElementAt(3).Item1}(Peso{pioresCromossomos.ElementAt(0).Item2})");
+            Excel.GravarCelula("G2", $"{pioresCromossomos.ElementAt(4).Item1}(Peso{pioresCromossomos.ElementAt(0).Item2})");
+
+            #endregion
+
+            #region Cabeçalho
+
+            Excel.GravarCelula("A3", "Peso");
+            Excel.GravarCelula("C3", "1º Ind.");
+            Excel.GravarCelula("D3", "2º Ind.");
+            Excel.GravarCelula("E3", "3º Ind.");
+            Excel.GravarCelula("F3", "4º Ind.");
+            Excel.GravarCelula("G3", "5º Ind."); 
+            
+            #endregion
+
+            #region Indivíduos
+
+            var linha = 4;
+            foreach (var ind in gen.Populacao.Individuos.OrderByDescending(x => x.Peso))
+            {
+                Excel.GravarCelula($"A{linha}", ind.Peso);
+
+                Excel.GravarCelula($"C{linha}", ind.Cromossomos[0]);
+                Excel.GravarCelula($"D{linha}", ind.Cromossomos[1]);
+                Excel.GravarCelula($"E{linha}", ind.Cromossomos[2]);
+                Excel.GravarCelula($"F{linha}", ind.Cromossomos[3]);
+                Excel.GravarCelula($"G{linha}", ind.Cromossomos[4]);
+
+                Excel.SalvarAlteracoes();
+                linha++;
+            } 
+
+            #endregion
+        }
+
+        private static List<(decimal, decimal)> ObterMelhoresIndividuos(int limite = 5)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static List<(decimal, decimal)> ObterPioresIndividuos(int limite = 5)
+        {
+            throw new NotImplementedException();
         }
 
         private static void MostrarUltimaGeracao()
