@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using TCC_CarteiraInvestimento.AlgoritmoGenetico;
 using TCC_CarteiraInvestimento.Entidades;
 using TCC_CarteiraInvestimento.Gestores;
@@ -38,8 +40,12 @@ namespace TCC_CarteiraInvestimento
                             AG.AvaliarIndividuos();
                             Print("Fitness aplicado... \n");
 
-                            SalvarHistorico(); //salvar após a avalição para manter o peso
-
+                            Task.Run(() => 
+                            {
+                                //salvar após a avalição para manter o peso
+                                SalvarHistorico(GestorEntidades.Geracoes.Count + 1, GestorEntidades.Populacao.Clonar<Populacao>());
+                            });
+                            
                             if (AG.PopulacaoApta()) break;
                             Print("População inadequada...");
 
@@ -85,20 +91,24 @@ namespace TCC_CarteiraInvestimento
             return (OpcoesMenu)int.Parse(Console.ReadLine());
         }
 
-        private static void SalvarHistorico()
+        static readonly object objectLock = new object();
+        private static void SalvarHistorico(int numeroGeracao, Populacao populacao)
         {
-            var gen = new Geracao()
+            lock (objectLock)
             {
-                DataGeracao = DateTime.Now,
-                NumeroGeracao = GestorEntidades.Geracoes.Count + 1,
-                Populacao = GestorEntidades.Populacao.Clonar<Populacao>()
-            };
+                var gen = new Geracao()
+                {
+                    DataGeracao = DateTime.Now,
+                    NumeroGeracao = numeroGeracao,
+                    Populacao = populacao
+                };
 
-            GestorEntidades.Geracoes.Add(gen);
+                GestorEntidades.Geracoes.Add(gen);
 
-            ExportarGeracao(gen);
-
-            MostrarUltimaGeracao();
+                ExportarGeracao(gen);
+                Print($"Geração {numeroGeracao} salva");
+                //MostrarUltimaGeracao();
+            }
         }
 
         private static void ExportarGeracao(Geracao gen)
@@ -108,29 +118,34 @@ namespace TCC_CarteiraInvestimento
             #region Melhor indivíduo
 
             var melhoresCromossomos = ObterMelhoresIndividuos();
-            Excel.GravarCelula("A1", "Melhor indivíduo");
-            Excel.GravarCelula("C1", $"{melhoresCromossomos.ElementAt(0).Item1}(Peso{melhoresCromossomos.ElementAt(0).Item2})");
-            Excel.GravarCelula("D1", $"{melhoresCromossomos.ElementAt(1).Item1}(Peso{melhoresCromossomos.ElementAt(0).Item2})");
-            Excel.GravarCelula("E1", $"{melhoresCromossomos.ElementAt(2).Item1}(Peso{melhoresCromossomos.ElementAt(0).Item2})");
-            Excel.GravarCelula("F1", $"{melhoresCromossomos.ElementAt(3).Item1}(Peso{melhoresCromossomos.ElementAt(0).Item2})");
-            Excel.GravarCelula("G1", $"{melhoresCromossomos.ElementAt(4).Item1}(Peso{melhoresCromossomos.ElementAt(0).Item2})");
+            Excel.MesclarCelulas("A1", "B1");
+            Excel.GravarCelula("A1", "Melhor indivíduo", melhoresCromossomos.Sum(x => x.Item2).ToString());
+            Excel.GravarCelula("C1", $"{melhoresCromossomos.ElementAt(0).Item1}", $"Peso {melhoresCromossomos.ElementAt(0).Item2}");
+            Excel.GravarCelula("D1", $"{melhoresCromossomos.ElementAt(1).Item1}", $"Peso {melhoresCromossomos.ElementAt(1).Item2}");
+            Excel.GravarCelula("E1", $"{melhoresCromossomos.ElementAt(2).Item1}", $"Peso {melhoresCromossomos.ElementAt(2).Item2}");
+            Excel.GravarCelula("F1", $"{melhoresCromossomos.ElementAt(3).Item1}", $"Peso {melhoresCromossomos.ElementAt(3).Item2}");
+            Excel.GravarCelula("G1", $"{melhoresCromossomos.ElementAt(4).Item1}", $"Peso {melhoresCromossomos.ElementAt(4).Item2}");
+
+
 
             #endregion
 
             #region Pior indivíduo
 
             var pioresCromossomos = ObterPioresIndividuos();
-            Excel.GravarCelula("A2", "Pior indivíduo");
-            Excel.GravarCelula("C2", $"{pioresCromossomos.ElementAt(0).Item1}(Peso{pioresCromossomos.ElementAt(0).Item2})");
-            Excel.GravarCelula("D2", $"{pioresCromossomos.ElementAt(1).Item1}(Peso{pioresCromossomos.ElementAt(0).Item2})");
-            Excel.GravarCelula("E2", $"{pioresCromossomos.ElementAt(2).Item1}(Peso{pioresCromossomos.ElementAt(0).Item2})");
-            Excel.GravarCelula("F2", $"{pioresCromossomos.ElementAt(3).Item1}(Peso{pioresCromossomos.ElementAt(0).Item2})");
-            Excel.GravarCelula("G2", $"{pioresCromossomos.ElementAt(4).Item1}(Peso{pioresCromossomos.ElementAt(0).Item2})");
+            Excel.MesclarCelulas("A2", "B2");
+            Excel.GravarCelula("A2", "Pior indivíduo", pioresCromossomos.Sum(x => x.Item2).ToString());
+            Excel.GravarCelula("C2", $"{pioresCromossomos.ElementAt(0).Item1}", $"Peso {pioresCromossomos.ElementAt(0).Item2}");
+            Excel.GravarCelula("D2", $"{pioresCromossomos.ElementAt(1).Item1}", $"Peso {pioresCromossomos.ElementAt(0).Item2}");
+            Excel.GravarCelula("E2", $"{pioresCromossomos.ElementAt(2).Item1}", $"Peso {pioresCromossomos.ElementAt(0).Item2}");
+            Excel.GravarCelula("F2", $"{pioresCromossomos.ElementAt(3).Item1}", $"Peso {pioresCromossomos.ElementAt(0).Item2}");
+            Excel.GravarCelula("G2", $"{pioresCromossomos.ElementAt(4).Item1}", $"Peso {pioresCromossomos.ElementAt(0).Item2}");
 
             #endregion
-            
+
             #region Cabeçalho
 
+            Excel.MesclarCelulas("A3", "B3");
             Excel.GravarCelula("A3", "Peso");
             Excel.GravarCelula("C3", "1º Ind.");
             Excel.GravarCelula("D3", "2º Ind.");
@@ -160,14 +175,24 @@ namespace TCC_CarteiraInvestimento
             #endregion
         }
 
-        private static List<(decimal, decimal)> ObterMelhoresIndividuos(int limite = 5)
+        private static List<(string, float)> ObterMelhoresIndividuos(int limite = 5)
         {
-            throw new NotImplementedException();
+            return ObterEmpresasComAvaliacao().OrderByDescending(x => x.Item2).Take(limite).ToList();
         }
 
-        private static List<(decimal, decimal)> ObterPioresIndividuos(int limite = 5)
+        private static List<(string, float)> ObterPioresIndividuos(int limite = 5)
         {
-            throw new NotImplementedException();
+            return ObterEmpresasComAvaliacao().OrderBy(x => x.Item2).Take(limite).ToList();
+        }
+
+        private static List<(string, float)> ObterEmpresasComAvaliacao()
+        {
+            var empresas = new List<(string, float)>();
+            GestorEntidades.CromossomosDisponiveis.ForEach(x =>
+            {
+                empresas.Add((x.Empresa.Codigo, AG.CalcularAvalicaoIndicadores(x)));
+            });
+            return empresas;
         }
 
         private static void MostrarUltimaGeracao()

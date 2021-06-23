@@ -22,10 +22,16 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
 
             for (int i = 0; i < GestorConfiguracao.IndividuosNaPopulacao - individuosGerados; i++)
             {
-                GestorEntidades.Populacao.Individuos.Add(new Individuo()
+                Individuo individuo;
+                do
                 {
-                    Cromossomos = ObterCromossomos()
-                });
+                    individuo = new Individuo()
+                    {
+                        Cromossomos = ObterCromossomos()
+                    };
+                } while (!IndividuoValido(individuo));
+
+                GestorEntidades.Populacao.Individuos.Add(individuo);
             }
         }
 
@@ -37,7 +43,7 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
             {
                 cromossomos.Add(cromossomo);
 
-                if(cromossomos.Count == GestorConfiguracao.CromossomosPorIndividuos)
+                if (cromossomos.Count == GestorConfiguracao.CromossomosPorIndividuos)
                 {
                     GestorEntidades.Populacao.Individuos.Add(new Individuo()
                     {
@@ -45,10 +51,10 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
                     });
 
                     cromossomos.Clear();
-                }  
+                }
             }
 
-            if(cromossomos.Count != 0) // Lista não foi limpa por não estar completa
+            if (cromossomos.Count != 0) // Lista não foi limpa por não estar completa
                 for (int i = cromossomos.Count; i < GestorConfiguracao.CromossomosPorIndividuos; i++)
                     cromossomos.Add(ObterCromossomoAleatorio());
 
@@ -61,7 +67,7 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
 
             for (int i = 0; i < GestorConfiguracao.CromossomosPorIndividuos; i++)
                 list.Add(ObterCromossomoAleatorio());
-            
+
             return list;
         }
 

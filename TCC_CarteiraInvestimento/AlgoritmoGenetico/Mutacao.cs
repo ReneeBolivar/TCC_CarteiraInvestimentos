@@ -31,6 +31,8 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
         {
             foreach (var cromossomoParaMutar in CromossomosParaMutar)
             {
+                Console.WriteLine($"**************Mutações {CromossomosParaMutar.Count}");
+
                 //Remove o cromossomo no index especificado
                 GestorEntidades.Populacao.Individuos
                     .ElementAt(cromossomoParaMutar.Key)

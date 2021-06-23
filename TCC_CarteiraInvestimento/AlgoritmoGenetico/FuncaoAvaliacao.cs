@@ -13,6 +13,8 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
     {
         public static void AvaliarIndividuos()
         {
+            GestorEntidades.Populacao.Individuos.ForEach(x => x.Peso = 0); //Garante que nenhum valor para a frente e atrapalhe a somatória
+
             foreach (var individuo in GestorEntidades.Populacao.Individuos)
             {
                 var pesoAnaliseFundamentalista = 0f;
@@ -20,13 +22,12 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
                     pesoAnaliseFundamentalista += CalcularAvalicaoIndicadores(cromossomo);
 
                 var pesoSetoresDiferentes = AvaliarSetores(individuo);
-                var pesoCromossomosDiferentes = AvaliarCromossomos(individuo);
 
-                individuo.Peso = pesoAnaliseFundamentalista + pesoSetoresDiferentes + pesoCromossomosDiferentes;
+                individuo.Peso = pesoAnaliseFundamentalista + pesoSetoresDiferentes;
             }
         }
 
-        private static float CalcularAvalicaoIndicadores(Cromossomo cromossomo)
+        public static float CalcularAvalicaoIndicadores(Cromossomo cromossomo)
         {
             switch (GestorConfiguracao.ConfiguracaoFitness)
             {
@@ -110,33 +111,6 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
         #endregion
 
         #region Avaliação de elementos únicos
-        private static int AvaliarCromossomos(Individuo individuo)
-        {
-            var qtdeCromossomos = individuo.Cromossomos.Count();
-            var cromossomosUnicos = individuo.Cromossomos.Distinct();
-
-            if (cromossomosUnicos.Count() == 1) // Todos os cromossomos são iguais
-                return -15;
-
-            if (qtdeCromossomos == cromossomosUnicos.Count()) // Todo os cromossomos são diferentes
-                return 15;
-
-            var porcentagemRestante = Utilitario.RegraDeTres(qtdeCromossomos, cromossomosUnicos.Count());
-
-            if (porcentagemRestante > 1 && porcentagemRestante < 26) // Sobrou entre 2% e 25%
-                return -4;
-
-            if (porcentagemRestante > 25 && porcentagemRestante < 51) // Sobrou entre 26% e 50%
-                return -3;
-
-            if (porcentagemRestante > 50 && porcentagemRestante < 76) // Sobrou entre 51% e 75%
-                return -2;
-
-            if (porcentagemRestante > 75 && porcentagemRestante < 100) // Sobrou entre 76% e 99%
-                return -1;
-
-            throw new ArgumentOutOfRangeException($"Valor não esperado no método {nameof(AvaliarCromossomos)}");
-        }
 
         private static int AvaliarSetores(Individuo individuo)
         {

@@ -65,6 +65,11 @@ namespace TCC_CarteiraInvestimento.Utils
             _worksheet.Cell(celula).Value = valor;
         }
 
+        public static void MesclarCelulas(string celula1, string celula2)
+        {
+            _worksheet.Range($"{celula1}:{celula2}").Merge();
+        }
+
         public static void SalvarAlteracoes()
             => _workbook.SaveAs(_arquivo);
 

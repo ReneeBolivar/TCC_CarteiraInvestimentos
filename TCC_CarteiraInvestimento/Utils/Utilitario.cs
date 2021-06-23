@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Threading;
 using TCC_CarteiraInvestimento.Entidades;
+using Bogus;
 
 namespace TCC_CarteiraInvestimento.Utils
 {
@@ -19,8 +20,8 @@ namespace TCC_CarteiraInvestimento.Utils
 
         public static int ObterNumeroRandom(int min, int max)
         {
-            Thread.Sleep(20); //Aguarda 20ms para evitar gerar valores dentro de um intervalo curto onde seja possivel ter duas ou mais saídas iguais
-            return new Random().Next(min, max);
+            var faker = new Faker();
+            return faker.Random.Number(min, max);
         }
 
         public static bool AreEquals(this Individuo individuo, Individuo individuoComparar)
