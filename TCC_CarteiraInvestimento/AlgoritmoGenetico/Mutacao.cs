@@ -12,49 +12,54 @@ namespace TCC_CarteiraInvestimento.AlgoritmoGenetico
     {
         private static Dictionary<int, int> CromossomosParaMutar = new Dictionary<int, int>();
 
+        static List<int> IdxIndividuosParaMutar = new List<int>();
+
         public static void MutarIndividuos()
         {
-            CromossomosParaMutar.Clear();
+            IdxIndividuosParaMutar.Clear();
 
-            for (int idxIndividuo = 0; idxIndividuo < GestorEntidades.Populacao.Individuos.Count; idxIndividuo++)
-                for (int idxCromossomo = 0; idxCromossomo < GestorConfiguracao.CromossomosPorIndividuos; idxCromossomo++)
-                    if (DeveMutar())
-                    { 
-                        CromossomosParaMutar.Add(idxIndividuo, idxCromossomo);
-                        break;
-                    }
+            for (int i = 0; i < GestorEntidades.Populacao.Individuos.Count; i++)
+                if (DeveMutar())
+                    IdxIndividuosParaMutar.Add(i);
 
-            AplicarMutacao();
+            if (IdxIndividuosParaMutar.Any())
+                Mutar();
         }
 
-        private static void AplicarMutacao()
+        private static void Mutar()
         {
-            foreach (var cromossomoParaMutar in CromossomosParaMutar)
+            IdxIndividuosParaMutar.ForEach(idx =>
             {
-                Console.WriteLine($"**************Mutações {CromossomosParaMutar.Count}");
+                var idxCromossomoMutacao = Utilitario.ObterNumeroRandom(0, 4);
+                Individuo individuo = GestorEntidades.Populacao.Individuos.ElementAt(idx);
+                do
+                {
+                    var novoCromossomo = ObterNovoCromossomo();
+                    individuo.Cromossomos[idxCromossomoMutacao] = novoCromossomo;
 
-                //Remove o cromossomo no index especificado
-                GestorEntidades.Populacao.Individuos
-                    .ElementAt(cromossomoParaMutar.Key)
-                    .Cromossomos
-                    .RemoveAt(cromossomoParaMutar.Value);
+                } while (!IndividuoValido(individuo));
 
-                //Adiciona o novo cromossomo no index especificado
-                GestorEntidades.Populacao.Individuos
-                    .ElementAt(cromossomoParaMutar.Key)
-                    .Cromossomos
-                    .Insert(cromossomoParaMutar.Value, ObterNovoCromossomo());
-            }
+                GestorEntidades.Populacao.Individuos[idx] = individuo;
+            });
         }
 
         private static bool DeveMutar()
         {
-            var rand = Utilitario.ObterNumeroRandom(0, 100);
+            var valores = new List<int>();
+            for (int i = 0; i < (GestorConfiguracao.TaxaMutacao * 100); i++)
+            {
+                int novoValor; 
+                do
+                {
+                    novoValor = Utilitario.ObterNumeroRandom(1, 100);
+                } while (valores.Contains(novoValor)); // Não permite números repetidos
 
-            if (rand >= 0 && rand <= (GestorConfiguracao.TaxaMutacao * 100))
-                return true;
+                valores.Add(novoValor);
+            }
 
-            return false;
+            var rand = Utilitario.ObterNumeroRandom(1, 100);
+
+            return valores.Contains(rand);
         }
 
         private static Cromossomo ObterNovoCromossomo()
